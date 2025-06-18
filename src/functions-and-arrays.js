@@ -72,17 +72,17 @@ function averageWordLength(words) {
 // Bonus - Iteration #4.1
 function avg(arr) {
   if (!arr.length) return null;
-  const validTypes=['number','string','boolean']
+  const validTypes = [ 'number', 'string', 'boolean' ]
 
   return arr.reduce((acc, value) => {
     if (!validTypes.includes(typeof value)) {
       throw new Error("Unsupported data type");
     }
-  
+
     if (typeof value === 'number') return acc + value;
     if (typeof value === 'string') return acc + value.length;
     if (typeof value === 'boolean') return acc + (value ? 1 : 0);
-    
+
   }, 0) / arr.length;
 }
 
@@ -102,7 +102,7 @@ const wordsUnique = [
   'bring'
 ];
 
-function uniquifyArray(arr) { 
+function uniquifyArray(arr) {
   if (!arr.length) return null;
   return Array.from(new Set(arr))
 }
@@ -112,7 +112,7 @@ function uniquifyArray(arr) {
 // Iteration #6: Find elements
 const wordsFind = [ 'machine', 'subset', 'trouble', 'starting', 'matter', 'eating', 'truth', 'disobedience' ];
 
-function doesWordExist(arr, word) { 
+function doesWordExist(arr, word) {
   if (!arr.length) return null;
   return arr.includes(word);
 }
@@ -134,8 +134,8 @@ const wordsCount = [
   'matter'
 ];
 
-function howManyTimes(arr, word) { 
-  return arr.filter( el => el===word).length
+function howManyTimes(arr, word) {
+  return arr.filter(el => el === word).length
 }
 
 
@@ -165,9 +165,69 @@ const matrix = [
 ];
 
 function greatestProduct(matrix) {
+  let maxProduct = 0;
+  const rows = matrix.length;
+  const cols = matrix[ 0 ].length;
 
-  
- }
+  // horizontal
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      let product = 1;
+      for (let limit = 0; limit < 4; limit++) {
+        product *= matrix[ row ][ col + limit ]
+      }
+      if (product > maxProduct) {
+        maxProduct = product;
+
+      }
+    }
+  }
+  // vertical 
+  for (let row = 0; row < rows - 4; row++) {
+    for (let col = 0; col < cols; col++) {
+      let product = 1;
+      for (let limit = 0; limit < 4; limit++) {
+        product *= matrix[ row + limit ][ col ]
+      }
+      if (product > maxProduct) {
+        maxProduct = product;
+
+      }
+    }
+    // diagonals
+    for (let row = 0; row < rows - 4; row++) {
+      // empezamos en col=3 para no salirnos por la izquierda
+      for (let col = 3; col < cols; col++) {
+        // ↘ diagonales hacia la derecha
+        if (cols + 3 < cols) {
+          let product = 1;
+          for (let i = 0; i < 4; i++) {
+            product *= matrix[ row + i ][ col - i ]; // ↙
+          }
+          if (product > maxProduct) {
+            maxProduct = product;
+          }
+
+        }
+
+        if (cols - 3 >= 0) {
+          let product = 1;
+          for (let i = 0; i < 4; i++) {
+            product *= matrix[ row + i ][ col - i ];
+          }
+          if (product > maxProduct) {
+            maxProduct = product;
+          }
+        }
+      }
+    }
+  }
+  // ↙ diagonales hacia la izquierda
+
+
+
+  return maxProduct;
+}
 
 
 
